@@ -38,4 +38,7 @@ public class PrepareResponseDTOService {
         return new ResponseDTO(data,"person data successfully updated");
     }
 
+    public ResponseDTO error(String message){
+        return new ResponseDTO(null,message,200,0);
+    }
 }

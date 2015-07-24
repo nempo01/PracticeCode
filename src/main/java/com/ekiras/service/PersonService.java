@@ -3,6 +3,7 @@ package com.ekiras.service;
 import com.ekiras.dao.PersonDAO;
 import com.ekiras.domain.Person;
 import com.ekiras.repository.PersonRepository;
+import com.ekiras.util.exception.InvalidPersonIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,10 @@ public class PersonService {
     }
 
     public Person findById(Long id){
-        return personRepository.findOne(id);
+        Person person =  personRepository.findOne(id);
+        if(person == null)
+            throw new InvalidPersonIdException();
+        return person;
     }
 
     public Person save(Person person){
@@ -32,6 +36,8 @@ public class PersonService {
 
     public Person update(Person personNew){
         Person personOld = personRepository.findOne(personNew.getId());
+        if(personOld == null)
+            throw new InvalidPersonIdException();
         personOld.setMobile(personNew.getMobile());
         personOld.setName(personNew.getName());
         return personRepository.save(personOld);
